@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = mongoose.Schema({
-  userId: { type: String, required: true }, //identifiant unique MongoDB pour l'utilisateur qui a créé la sauce
   email: {
     type: String,
     required: true,
@@ -14,4 +13,4 @@ const userSchema = mongoose.Schema({
 
 userSchema.plugin(uniqueValidator);
 
-module.exports = mogoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);
