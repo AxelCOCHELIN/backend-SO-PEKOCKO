@@ -33,6 +33,8 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json()); //défini la fonction json comme middleware global
 
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 app.use("/api/auth", userRoutes); //l'application utilise le endpoint /api/auth pour les routes userRoutes
 app.use("/api/sauces", sauceRoutes); //l'application utilise le endpoint /api/sauces pour les routes sauceRoutes
 
