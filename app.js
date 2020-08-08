@@ -5,6 +5,7 @@ const path = require("path");
 //importe des modules express, nodyparser, mongoose et path
 
 const userRoutes = require("./routes/user"); //lie les routes user à l'app
+const sauceRoutes = require("./routes/sauces");
 
 const app = express(); //créer l'application express
 
@@ -33,6 +34,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); //défini la fonction json comme middleware global
 
 app.use("/api/auth", userRoutes); //l'application utilise le endpoint /api/auth pour les routes userRoutes
-//app.use("/api/sauces", sauceRouter); //const sauceRouter = require("./routes/sauces");l'application utilise le endpoint /api/auth pour les routes sauceRoutes
+app.use("/api/sauces", sauceRoutes); //l'application utilise le endpoint /api/sauces pour les routes sauceRoutes
 
 module.exports = app;
