@@ -33,5 +33,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); //défini la fonction json comme middleware global
 
 app.use("/api/auth", userRoutes); //l'application utilise le endpoint /api/auth pour les routes userRoutes
+//app.use("/api/sauces", sauceRouter); //const sauceRouter = require("./routes/sauces");l'application utilise le endpoint /api/auth pour les routes sauceRoutes
 
 module.exports = app;
