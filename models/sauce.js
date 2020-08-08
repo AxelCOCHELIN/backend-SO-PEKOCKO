@@ -14,4 +14,4 @@ const sauceSchema = mongoose.Schema({
   usersDisliked: { type: Array, required: true }, //tableau d'identifiants d'utilisateurs n'ayant pas aimé la sauce.
 });
 
-module.exports = mongoose.model("Sauce", userSchema);
+module.exports = mongoose.model("Sauce", sauceSchema);
