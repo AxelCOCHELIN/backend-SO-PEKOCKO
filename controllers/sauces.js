@@ -134,5 +134,4 @@ exports.userSaucesLiked = (req, res, next) => {
  * Si l'utilisateur enlève son vote
  *  on vide l'array userLiked et on enleve un like sinon le meme
  *  utilisateur pourrait ajouter plusieurs likes
- *
  * */
