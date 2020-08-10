@@ -4,7 +4,7 @@ const User = require("../models/user");
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
 
-// Create a schema
+// Créer un schema
 var validPassword = new passwordValidator();
 
 validPassword
@@ -57,7 +57,6 @@ exports.login = (req, res, next) => {
    * si valide, valider la requête, renvoyer un userId et un token
    * si erreur autre renvoyer une erreur serveur
    */
-
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {

@@ -3,6 +3,7 @@ const http = require("http");
 const app = require("./app");
 
 const normalizePort = (val) => {
+  //Cette fonction renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaine de caractères
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -15,9 +16,11 @@ const normalizePort = (val) => {
 };
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
-/**Cette fonction renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaine de caractères */
 
 const errorHandler = (error) => {
+  /**Cette fonction recherche les erreurs et les gère de manière approprié.
+   * Elle est ensuite enregistrée dans le serveur.
+   * Un écouteur d'événement est également enregistré, consignant le port et le canal nopmé sur lequel le serveur s'execute dans la console.*/
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -37,10 +40,6 @@ const errorHandler = (error) => {
       throw error;
   }
 };
-/**Cette fonction recherche les erreurs et les gère de manière approprié.
- * Elle est ensuite enregistrée dans le serveur.
- * Un écouteur d'événement est également enregistré, consignant le port et le canal nopmé sur lequel le serveur s'execute dans la console.
- */
 
 const server = http.createServer(app);
 
