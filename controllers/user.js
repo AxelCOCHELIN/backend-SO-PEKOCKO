@@ -28,7 +28,7 @@ exports.signup = (req, res, next) => {
     !emailValidator.validate(req.body.email) ||
     !validPassword.validate(req.body.password)
   ) {
-    return res.status(404).json({
+    return res.status(403).json({
       message:
         "le mot de passe doit contenir une majuscule, une minuscule et un chiffre. Sa longueur doit être comprise entre 8 et 20 caractères",
     });
@@ -41,25 +41,27 @@ exports.signup = (req, res, next) => {
       .hash(req.body.password, 10)
       .then((hash) => {
         const user = new User({
-          email: maskData.maskEmail2(req.body.email),
+          email: req.body.email,
           password: hash,
         });
-        user
-          .save()
-          .then(res.status(201).json({ message: "Nouvel utilisateur créé !" }))
-          .catch((error) => res.status(400).json({ error }));
+        user.save((err, user) => {
+          if (!err)
+            res.status(201).json({ message: "Nouvel utilisateur créé !" });
+          else {
+            res.status(400).json({ err });
+          }
+        });
       })
       .catch((error) => res.status(500).json({ error }));
   }
 };
 
 exports.login = (req, res, next) => {
-  User.findOne({ email: maskData.maskEmail2(req.body.email) }) //trouver l'utilisateur qui correspond à l'adresse mail unique
+  User.findOne({ email: req.body.email }) //trouver l'utilisateur qui correspond à l'adresse mail unique
     .then((user) => {
       if (!user) {
         return res.status(401).json({
           message: "Utilisateur non trouvé !",
-          email: maskData.maskEmail2(req.body.email),
         }); //si non trouvé renvoyer une erreur
       } else {
         bcrypt
