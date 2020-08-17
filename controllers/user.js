@@ -3,7 +3,6 @@ const jsonWebToken = require("jsonwebtoken");
 const User = require("../models/user");
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
-const maskData = require("maskdata");
 
 // Créer un schema
 let validPassword = new passwordValidator();
