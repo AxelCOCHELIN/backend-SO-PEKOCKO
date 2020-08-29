@@ -3,6 +3,7 @@ const jsonWebToken = require("jsonwebtoken");
 const User = require("../models/user");
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
+const sanitizer = require("mongo-sanitize");
 
 // Créer un schema
 let validPassword = new passwordValidator();
@@ -24,16 +25,16 @@ validPassword
 
 exports.signup = (req, res, next) => {
   if (
-    !emailValidator.validate(req.body.email) ||
-    !validPassword.validate(req.body.password)
+    !emailValidator.validate(sanitizer(req.body.email)) ||
+    !validPassword.validate(sanitizer(req.body.password))
   ) {
     return res.status(403).json({
       message:
         "le mot de passe doit contenir une majuscule, une minuscule et un chiffre. Sa longueur doit être comprise entre 8 et 20 caractères",
     });
   } else if (
-    emailValidator.validate(req.body.email) &&
-    validPassword.validate(req.body.password)
+    emailValidator.validate(sanitizer(req.body.email)) &&
+    validPassword.validate(sanitizer(req.body.password))
   ) {
     //appeler la fonction de hachage, créer un nouvel utilisateur, le sauvegarder dans la base de données
     bcrypt
@@ -56,20 +57,20 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email }) //trouver l'utilisateur qui correspond à l'adresse mail unique
+  User.findOne({ email: sanitizer(req.body.email) }) //trouver l'utilisateur qui correspond à l'adresse mail unique
     .then((user) => {
       if (!user) {
         return res.status(401).json({
-          message: "Utilisateur non trouvé !",
+          message: "Les informations de connexion ne sont pas correctes!",
         }); //si non trouvé renvoyer une erreur
       } else {
         bcrypt
           .compare(req.body.password, user.password) //si trouvé comparer le mot de passe haché avec celui de la base de données grâce à bcrypt
           .then((valid) => {
             if (!valid) {
-              return res
-                .status(401)
-                .json({ message: "Mot de passe incorrect !" }); //si mot de passe non valide renvoyer une erreur
+              return res.status(401).json({
+                message: "Les informations de connexion ne sont pas correctes!",
+              }); //si mot de passe non valide renvoyer une erreur
             }
             res.status(200).json({
               //si valide, valider la requête, renvoyer un userId et un token
